@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+networkx
+pyyaml
+xlsxwriter
+tornado
+requests
+beautifulsoup4
+selenium
