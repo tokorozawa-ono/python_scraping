@@ -20,19 +20,22 @@ def _get(inifile, section, name):
 # ランダム間隔
 def _getRandomNum():
     return random.randint(3,7)
-# 楽天検索
+# 検索
 def execSearch(browser: webdriver, inifile):
-    browser.get(_get(inifile, 'search', 'url'))
+
     # 検索ワード抽出
-    contents = browser.find_elements_by_class_name(_get(inifile, 'search', 'search_class'))
+    browser.get(_get(inifile, 'search', 'url_trend'))
+    contents = browser.find_elements_by_tag_name('h1')
     searchWords = []
     for content in contents:
-        values = content.get_attribute("value")
-        searchWords.append(values)
+        searchWords.append(content.text)
+    searchWords.pop(0)
+    searchWords.pop(0)
 
-    # ログインボタンの押下(楽天検索、メールDEポイント共通)
+    # ログインボタンの押下(検索、メールDEポイント共通)
+    browser.get(_get(inifile, 'search', 'url') + '/Web?qt=' + searchWords[0])
+    searchWords.pop(0)
     browser.find_element_by_link_text(_get(inifile, 'search', 'login_context')).click()
-    sleep(_getRandomNum())
 
     login_user = browser.find_element_by_name(_get(inifile, 'user', 'id_name'))
     login_user.send_keys(_get(inifile, 'user', 'id'))
@@ -46,13 +49,10 @@ def execSearch(browser: webdriver, inifile):
         search_box = browser.find_element_by_name("qt")
         search_box.clear()
         search_box.send_keys(searchWord)
-        if index == 0:
-            browser.find_element_by_id('search-submit').submit()
-        else:
-            browser.find_element_by_id('searchBtn').click()
+        browser.find_element_by_id('searchBtn').click()
         sleep(_getRandomNum())
 
-# 楽天検索
+# メールDEポイント
 def execMailDePoint(browser: webdriver, inifile):
     browser.get(_get(inifile, 'mailde', 'url_list'))
     WebDriverWait(browser, 10).until(
@@ -65,6 +65,7 @@ def execMailDePoint(browser: webdriver, inifile):
         url = point.get_attribute("href")
         urlLinkList.append(url)
 
+
     #　各リンク毎にリンク押下
     for index, linkUrl in enumerate(urlLinkList):
         browser.get(linkUrl)
@@ -72,7 +73,10 @@ def execMailDePoint(browser: webdriver, inifile):
             linkText = browser.find_element_by_css_selector('.frameInner div div div a').get_attribute("href")
             browser.get(linkText)
         except NoSuchElementException as te:
-            print(linkUrl)
+            try:
+                browser.find_element_by_css_selector('span.point_url').click()
+            except NoSuchElementException as te2:
+                print(te2.message)
 
 if __name__ == '__main__':
     # Chromeの日本語
@@ -87,7 +91,7 @@ if __name__ == '__main__':
             command_executor='http://selenium-hub:4444/wd/hub',
             desired_capabilities=options.to_capabilities())
 
-        # 楽天検索
+        # 検索
         execSearch(browser, inifile)
 
         # メールでポイント

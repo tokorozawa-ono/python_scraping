@@ -1,4 +1,2 @@
 # rakuten
-*/2 * * * * /usr/local/bin/python /app/login/log_search.py  1>> /app/logfile/cron.log 2>> /app/logfile/cron-err.log
-
-
+0 16 * * * /usr/local/bin/python /app/login/log_search.py  1>> /app/logfile/cron.log 2>> /app/logfile/cron-err.log
