@@ -1,15 +1,11 @@
-[search]
-url=https://websearch.rakuten.co.jp/
-login_context=ログイン
-search_class=trend-word
-
-[mailde]
-url_base=https://member.pointmail.rakuten.co.jp
-url_list=https://member.pointmail.rakuten.co.jp/box/
-search_class=listCont
+[login]
+url=
 
 [user]
-id_name=
-pass_name=
 id=
 pass=
+
+[mailde]
+url_base=
+url_list=
+search_class=listCont

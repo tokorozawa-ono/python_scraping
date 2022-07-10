@@ -1,25 +1,10 @@
 selenium-hub:
-  image: selenium/hub
-  container_name: 'selenium-hub'
+  image: selenium/standalone-chrome:4.1.4-20220427
+  container_name: 'standalone-chrome'
   ports:
     - 4444:4444
-
-chrome:
-  image: selenium/node-chrome-debug
-  container_name: 'chrome'
-  links:
-    - selenium-hub:hub
-  ports:
     - 5900:5900
-  volumes:
-    - /dev/shm:/dev/shm
-firefox:
-  image: selenium/node-firefox-debug
-  container_name: 'firefox'
-  ports:
-    - 5910:5900
-  links:
-    - selenium-hub:hub
+
 python3:
   #restart: always
   build: './scraping'
