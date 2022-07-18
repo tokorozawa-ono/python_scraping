@@ -1,11 +1,15 @@
 [login]
 url=
 
-[user]
-id=
-pass=
+[search]
+url=https://websearch.rakuten.co.jp/
+search_class=trend-word
 
 [mailde]
 url_base=
 url_list=
 search_class=listCont
+
+[user]
+id=
+pass=

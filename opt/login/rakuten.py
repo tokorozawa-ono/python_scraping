@@ -26,41 +26,11 @@ lotinfo = {
         'url': 'https://kuji.rakuten.co.jp/14d330d3e0',
         'element': '//*[@id="entry"]',
     },
-    # 'insurance': {
-    #     'title': '楽天保険の総合窓口',
-    #     'url': 'https://kuji.rakuten.co.jp/10a37ad0e0',
-    #     'element': '//*[@id="entry"]',
-    # },
-    # 'eat': {
-    #     'title': '楽天ぐるなび',
-    #     'url': 'https://kuji.rakuten.co.jp/4e9371dd92',
-    #     'element': '//*[@id="entry"]',
-    # },
     'car': {
         'title': '楽天Car保険',
         'url': 'https://kuji.rakuten.co.jp/26d37b04b2',
         'element': '//*[@id="entry"]',
     },
-    # 'recipe': {
-    #     'title': '楽天レシピ',
-    #     'url': 'https://kuji.rakuten.co.jp/602389bf09?scid=su_10831',
-    #     'element': '//*[@id="entry"]',
-    # },
-    # 'beauty': {
-    #     'title': '楽天ビューティ',
-    #     'url': 'https://kuji.rakuten.co.jp/bc23814a75',
-    #     'element': '//*[@id="entry"]',
-    # },
-    # 'toto': {
-    #     'title': '楽天toto',
-    #     'url': 'https://kuji.rakuten.co.jp/8c538152dd',
-    #     'element': '//*[@id="entry"]',
-    # },
-    # 'loto': {
-    #     'title': '楽天宝くじ',
-    #     'url': 'https://kuji.rakuten.co.jp/4263816d7f',
-    #     'element': '//*[@id="entry"]',
-    # },
     'openspace': {
         'title': '楽天くじ広場',
         'url': 'https://kuji.rakuten.co.jp/4351057845',
@@ -86,16 +56,6 @@ lotinfo = {
         'url': 'https://kuji.rakuten.co.jp/46211bf9dd',
         'element': '//*[@id="entry"]',
     },
-    'tv': {
-        'title': '楽天TV',
-        'url': 'https://point-g.rakuten.co.jp/point_get/',
-        'element': '//*[@id="entry"]',
-    },
-    # 'gallery': {
-    #     'title': '楽天スーパーポイントギャラリー',
-    #     'url': 'https://kuji.rakuten.co.jp/',
-    #     'element': '//*[@id="entry"]',
-    # },
 }
 
 
@@ -108,9 +68,8 @@ def _get(inifile, section, name):
 # ランダム間隔
 def _getRandomNum():
     return random.randint(3,7)
-# 検索
+# 楽天ログイン
 def execLogin(browser: webdriver, inifile):
-    # 楽天ログイン
     url = _get(inifile, 'login', 'url')
     browser.get(url)
     elem_username = browser.find_element(By.ID,"loginInner_u")
@@ -162,15 +121,19 @@ def execLottery(browser: webdriver):
             print(e)
 
 if __name__ == '__main__':
-    # Chromeの日本語
-    options = webdriver.ChromeOptions()
+    # # Chromeの日本語
+    # options = webdriver.ChromeOptions()
+    options = webdriver.EdgeOptions()
     options.add_argument("--start-maximized")
     options.add_experimental_option('prefs', {'intl.accept_languages': 'ja'})
     options.add_argument("--disable-dev-shm-usage") #chrome bug
     # options.add_argument('--headless')
 
+    # browser = webdriver.Remote(
+    #     command_executor='http://standalone-chrome:4444/wd/hub',
+    #     options=options)
     browser = webdriver.Remote(
-        command_executor='http://standalone-chrome:4444/wd/hub',
+        command_executor='http://standalone-edge:4444/wd/hub',
         options=options)
     inifile = configparser.ConfigParser()
     inifile.read("/app/login/setting.ini")
@@ -183,7 +146,7 @@ if __name__ == '__main__':
         execMailDePoint(browser, inifile)
 
         # くじ
-        # execLottery(browser)
+        execLottery(browser)
     except Exception as e:
         print(e)
     finally:

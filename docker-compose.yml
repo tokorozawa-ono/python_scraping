@@ -1,19 +1,26 @@
-selenium-hub:
-  image: selenium/standalone-chrome:4.1.4-20220427
-  container_name: 'standalone-chrome'
-  ports:
-    - 4444:4444
-    - 5900:5900
-
-python3:
-  #restart: always
-  build: './scraping'
-  container_name: 'python3'
-  command: 'tail -f /dev/null'
-  environment:
-    TZ: Asia/Tokyo
-  links:
-    - selenium-hub:hub
-  working_dir: '/app'
-  volumes:
-    - ./opt:/app
+version: "3"
+services:
+  selenium-hub:
+    image: selenium/standalone-chrome:4.1.4-20220427
+    container_name: 'standalone-chrome'
+    ports:
+      - 4444:4444
+      - 5900:5900
+  selenium-hub2:
+    image: selenium/standalone-edge:103.0
+    container_name: 'standalone-edge'
+    ports:
+      - 4445:4444
+      - 5901:5900
+  python3:
+    #restart: always
+    build: './scraping'
+    container_name: 'python3'
+    command: 'tail -f /dev/null'
+    environment:
+      TZ: Asia/Tokyo
+    links:
+      - selenium-hub:hub
+    working_dir: '/app'
+    volumes:
+      - ./opt:/app
